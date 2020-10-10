@@ -39,11 +39,12 @@ export default function RegisterPage() {
                 <input type="password" name="password_confirmation" autoComplete="new-password" className="input" />
             </div>
 
-            <div className="mb-6 input-checkbox">
-                <input type="checkbox" name="is_mentor"/>
-                <label htmlFor="is_mentor" className="label" >I want to mentor</label>
-            </div>
-      
+            <label class="md:w-2/3 mb-3 block text-gray-500 font-bold">
+                <input class="mr-2 leading-tight" name="is_mentor" type="checkbox"/>
+                <span class="text-sm">
+                I want to mentor
+                </span>
+            </label>
 
             <div className="input-group">
                 <input type="submit" className="btn btn-default" />
