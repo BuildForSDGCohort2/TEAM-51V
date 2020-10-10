@@ -9,6 +9,10 @@
       <%= f.label :name, class:"label" %>
       <%= f.text_field :name, class:"input" %>
     </div>
+    <div class="input-group">
+      <%= f.label :username, class:"label" %>
+      <%= f.text_field :username, class:"input" %>
+    </div>
 
     <div class="input-group">
       <%= f.label :email, class:"label" %>
@@ -28,6 +32,11 @@
     <div class="input-group">
       <%= f.label :password_confirmation, class:"label" %>
       <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "input" %>
+    </div>
+
+    <div class="mb-6 input-checkbox">
+      <%= f.check_box :is_mentor %>
+      <%= f.label "I want to mentor", for: "user_is_mentor", class:"label" %>
     </div>
 
     <div class="input-group">

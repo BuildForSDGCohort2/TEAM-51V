@@ -1,51 +1,5 @@
-<!DOCTYPE html>
-<html>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <link rel="shortcut icon" href="./assets/img/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png" />
-    
-  <%= stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= stylesheet_pack_tag  'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_pack_tag  'application', 'data-turbolinks-track': 'reload' %>
-    <%
-=begin%>
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/creativetimofficial/tailwind-starter-kit/compiled-tailwind.min.css" /> 
-<%
-=end%>
-    <title>BeMentored</title>
-</head>
-
-<body class="text-gray-800 antialiased">
-    <nav class="top-0 absolute z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg">
-        <div class="container px-4 mx-auto flex flex-wrap items-center justify-between">
-            <div class="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
-                <a class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-no-wrap uppercase text-white" href="/">Home</a><button class="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none" type="button" onclick="toggleNavbar('example-collapse-navbar')">
-                    <i class="text-white fas fa-bars"></i>
-                </button>
-            </div>
-            <div class="lg:flex flex-grow items-center bg-white lg:bg-transparent lg:shadow-none hidden" id="example-collapse-navbar">
-                <ul class="flex flex-col lg:flex-row list-none lg:ml-auto">
-                    <% if user_signed_in? %>
-                    <li class="flex items-center">
-                        <%= link_to "Edit account", edit_user_registration_path, class: "btn btn-default mb-2 lg:mr-2 lg:mb-0 block" %>
-                        <%= link_to "Log out", destroy_user_session_path, method: :delete, class:"btn btn-default mb-2 lg:mb-0 block" %>
-                        
-                        </li>
-                        <% else %>
-                    <li class="flex items-center">
-                        <%= link_to "Login", new_user_session_path, class: "bg-white text-gray-800 active:bg-gray-100 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3" %>
-                        <%= link_to "Sign up", new_user_registration_path, class: "bg-white text-gray-800 active:bg-gray-100 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3" %>
-                    </li>
-                        <% end %>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <main>
+    <main class="text-gray-800 antialiased">
         <div class="relative pt-16 pb-32 flex content-center items-center justify-center" style="min-height: 75vh;">
  <%
 =begin%>
@@ -139,12 +93,3 @@
             </div>
         </div>
     </footer>
-</body>
-<script>
-    function toggleNavbar(collapseID) {
-        document.getElementById(collapseID).classList.toggle("hidden");
-        document.getElementById(collapseID).classList.toggle("block");
-    }
-</script>
-
-</html>
