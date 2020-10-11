@@ -1,7 +1,56 @@
 
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
+import Toast from '../../Toast'
+import UserStore from "./UserStore";
+
 export default function RegisterPage() {
+    let history = useHistory();
+
+    const [login, setLogin] = useState({ email: "", password: "", password_confirmation: "", username: "", is_mentor: 'off' })
+    const handleChange = e => {
+        setLogin({ ...login, [e.target.name]: e.target.value })
+    }
+
+    useEffect(() => {
+        if (UserStore.getUser()) {
+            history.replace( '/dashboard')
+        }
+    }, [])
+    const handleSubmit = e => {
+        e.preventDefault();
+        const payload = {
+            user: login,
+            // authenticity_token: document.querySelector('[name=csrf-token]').content
+
+        };
+        fetch('/users', {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            credentials: 'omit',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                // 'X-CSRF-TOKEN': document.querySelector('[name=csrf-token]').content,
+
+            }
+        }).then((response) => {
+            if (response.ok) {
+                return response.json()
+            }
+        })
+            .then((data) => {
+                UserStore.setUser(data)
+                history.replace( '/dashboard')
+            }
+            ).catch((error) => {
+                console.log(error);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Incorrect email or password'
+                })
+            })
+        }
 
     return (<div className="w-full max-w-md mx-auto my-8">
         <div className="bg-white border border-gray-300 rounded-lg px-8 pt-6 pb-8">
@@ -9,7 +58,7 @@ export default function RegisterPage() {
 
 
         <h2 className="pt-4 mb-8 text-4xl font-bold heading">Sign up</h2>
-        <form action="">
+        <form onSubmit={handleSubmit}>
             <div className="input-group">
                 <label className="label" >Name</label>
                 <input type="text" name="name" className="input" />
