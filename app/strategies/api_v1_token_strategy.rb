@@ -8,7 +8,7 @@ class ApiV1TokenStrategy < Warden::Strategies::Base
 
     if user
       success!(user)
-      cookies.clear
+      # cookies.clear
     else
       # cookies.clear
       fail!('Invalid login details')

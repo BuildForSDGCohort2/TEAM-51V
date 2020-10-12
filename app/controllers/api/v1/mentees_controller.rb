@@ -5,9 +5,6 @@ module Api
       before_action :set_mentee, only: %i[show]
 
       def index
-        
-        # binding.pry
-        
         render json: current_user.mentees || []
       end
 
@@ -18,7 +15,7 @@ module Api
       private
 
       def set_mentee
-        @mentee = User.find(params[:id])
+        @mentee = User.find_by(username: params[:id])
       end
     end
   end

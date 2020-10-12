@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import { Link, useHistory } from "react-router-dom";
 import Toast from '../../Toast'
 import UserStore from "./UserStore";
@@ -35,11 +36,17 @@ export default function LoginPage() {
 
             }
         }).then((response) => {
-            if (response.ok) {
                 return response.json()
-            }
         })
             .then((data) => {
+                if (data && data.error) {
+                    console.log(data.error);
+                    throw Error(data.error)
+                }
+                Toast.fire({
+                    icon: 'success',
+                    title: `Welcome back ${data.username}`
+                })
                 UserStore.setUser(data)
                 history.replace( '/dashboard')
             }
@@ -47,7 +54,7 @@ export default function LoginPage() {
                 console.log(error);
                 Toast.fire({
                     icon: 'error',
-                    title: 'Incorrect email or password'
+                    title: error
                 })
             })
     }

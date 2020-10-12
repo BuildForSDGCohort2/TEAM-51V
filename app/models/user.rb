@@ -3,25 +3,15 @@ class User < ApplicationRecord
   has_one_attached :avatar
   has_one_attached :cover_image
 
-  has_many :mentorships, foreign_key: :mentee_id
-  has_many :mentorships, foreign_key: :mentor_id
-  has_many :mentors, through: :mentorships, foreign_key: :mentor_id
-  has_many :mentees, through: :mentorships, foreign_key: :mentee_id
 
+  has_many :mentee_relationships, foreign_key: :mentor_id, class_name: 'Mentorship'
+  has_many :mentees, through: :mentee_relationships, source: :mentee
 
-  # has_many :mentors, source: :mentorships, foreign_key: :mentor_id
-  # has_many :mentees, source: :mentorships, foreign_key: :mentee_id
-
-  # has_many :mentees, class_name: 'Mentorship', foreign_key: :mentee_id
-  # has_many :mentors, through: :mentees
-
-  # has_many :mentors, class_name: 'Mentorship', foreign_key: :mentor_id
-  # has_many :mentees, through: :mentors
-
-  # has_many :mentees, class_name: 'Mentorship', foreign_key: :mentor_id
-  # has_many :mentors, class_name: 'Mentorship', foreign_key: :mentee_id
+  has_many :mentor_relationships, foreign_key: :mentee_id, class_name: 'Mentorship'
+  has_many :mentors, through: :mentor_relationships, source: :mentor
 
   validates_presence_of :username
+  validates :username, uniqueness: { case_sensitive: false }
   validates_presence_of :name
   validates_presence_of :email
 

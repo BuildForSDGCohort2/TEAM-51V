@@ -80,7 +80,7 @@ Devise.setup do |config|
   # The supported strategies are:
   # :database      = Support basic authentication with authentication key + password
   # config.http_authenticatable = false
-  config.http_authenticatable = [:database]
+
   # If 401 status code should be returned for AJAX requests. True by default.
   # config.http_authenticatable_on_xhr = true
 
@@ -129,10 +129,10 @@ Devise.setup do |config|
   # config.pepper = 'b9627e2d29d823800c2784bec0597711bbf5abdf3c1b86fd1a5c37fe9b3a8a5d9a10ddb4bcde0271a05cab4713cc88f68fd9f499907507b36c53f70bd00f2579'
 
   # Send a notification to the original email when the user's email is changed.
-  # config.send_email_changed_notification = false
+  config.send_email_changed_notification = true
 
   # Send a notification email when the user's password is changed.
-  # config.send_password_change_notification = false
+  config.send_password_change_notification = true 
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
@@ -277,10 +277,10 @@ Devise.setup do |config|
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
   #
-  # config.warden do |manager|
-  #   manager.intercept_401 = false
-  #   manager.default_strategies(scope: :user).unshift :some_external_strategy
-  # end
+  config.warden do |manager|
+    # manager.intercept_401 = false
+    manager.default_strategies(scope: :user).unshift :auth_token
+  end
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine

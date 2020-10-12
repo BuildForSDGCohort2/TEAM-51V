@@ -10,9 +10,12 @@ Rails.application.routes.draw do
     namespace :v1 do
       get 'users', to: 'users#index'
       get 'users/:id', to: 'users#show'
+      
+      resources :stats, only: [:index, :show]
 
       resources :mentors
       resources :mentees
+      resources :mentorships
     end
   end
 

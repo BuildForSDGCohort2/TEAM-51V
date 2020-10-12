@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 
@@ -11,7 +11,7 @@ import UserStore from "../Auth/UserStore";
 export default function Sidebar() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
   const [user, setUser] = useState()
-
+    let history = useHistory();
   useEffect(() => {
     if (!UserStore.getUser()) {
       localStorage.clear()

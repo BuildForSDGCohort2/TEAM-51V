@@ -4,8 +4,8 @@ module Api
             before_action :authenticate_user!
             def index
                 render json: {
-                    # mentees_this_month: current_user.mentees.where('mentorships.created_at': [Time]),
-                    # mentees_today: current_user.mentees.where('mentorships.created_at': [Time.today.])
+                    mentees_this_month: current_user.mentees.where('mentorships.created_at': Date.today).count,
+                    mentees_today: current_user.mentees.where('mentorships.created_at': Date.today).count
                 }
             end
             

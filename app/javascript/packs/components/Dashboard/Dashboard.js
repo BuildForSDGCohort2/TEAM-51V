@@ -13,7 +13,7 @@ export default function Dashboard() {
   let history = useHistory();
   const [user, setUser] = useState()
   useEffect(() => {
-    if (!UserStore.getUser()) {
+    if (!UserStore.getToken()) {
       localStorage.clear()
       history.replace('/sign_in')
     } else {
