@@ -11,7 +11,8 @@ export default function DashboardNavbar() {
   console.log("UserStore.getUser()",UserStore.getUser());
   const [user, setUser] = useState(UserStore.getUser())
   useEffect(() => {
-    if (!UserStore.getUser()) {
+    console.log("token",UserStore.getToken());
+    if (!UserStore.getToken()) {
       localStorage.clear()
       history.replace('/sign_in')
     } else {

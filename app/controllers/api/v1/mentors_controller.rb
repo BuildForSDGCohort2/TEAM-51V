@@ -9,7 +9,9 @@ module Api
       end
 
       def show
-        render json: @mentor
+        mentor = @mentor.to_json
+        mentor[:mentors_user] = current_user.mentors.where(mentor: mentor).exists?
+        render json: mentor
       end
 
       private

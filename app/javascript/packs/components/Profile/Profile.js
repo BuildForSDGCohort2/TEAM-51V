@@ -1,5 +1,8 @@
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Toast from "../../Toast";
 import UserStore from "../Auth/UserStore";
 import Footer from "../Menu/Footer";
 import Navbar from "../Menu/Navbar";
@@ -9,6 +12,7 @@ export default function Profile() {
   let { username } = useParams();
   const [user, setUser] = useState([])
   const [progress, setProgress] = useState(true)
+  const [addLoading, setAddLoading] = useState(false)
 
   useEffect(() => {
     fetch(`/api/v1/users/${username}`, {
@@ -37,6 +41,74 @@ export default function Profile() {
         })
       }).finally(() => setProgress(false))
   }, [])
+
+  const handleMentorAdd = e =>{
+    setAddLoading(true)
+    fetch(`/api/v1/mentorships`, {
+      method: 'POST',
+      body: JSON.stringify({'username':username}),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authentication': `Bearer ${UserStore.getUser().auth_token}`
+        // 'X-CSRF-TOKEN': document.querySelector('[name=csrf-token]').content,
+      }
+    }).then((response) => {
+      if (response.ok) {
+        return response.json()
+      }
+    })
+      .then((data) => {
+        if (data) {
+          setUser({...user, mentors_user: true})
+          Toast.fire({
+            icon: 'success',
+            title: 'Mentor added successfully.'
+          })
+        }
+      }
+      ).catch((error) => {
+        console.log(error);
+        Toast.fire({
+          icon: 'error',
+          title: 'Mentor Could not be added.'
+        })
+      }).finally(() => setAddLoading(false))
+  }
+
+  const handleMentorRemove = e =>{
+    setAddLoading(true)
+    fetch(`/api/v1/mentorships/${username}`, {
+      method: 'DELETE',
+      body: JSON.stringify({'username':username}),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authentication': `Bearer ${UserStore.getUser().auth_token}`
+        // 'X-CSRF-TOKEN': document.querySelector('[name=csrf-token]').content,
+      }
+    }).then((response) => {
+      if (response.ok) {
+        return response.json()
+      }
+    })
+      .then((data) => {
+        if (data) {
+          setUser({...user, mentors_user: false})
+          Toast.fire({
+            icon: 'success',
+            title: 'Mentor removed successfully.'
+          })
+        }
+      }
+      ).catch((error) => {
+        console.log(error);
+        Toast.fire({
+          icon: 'error',
+          title: 'Mentor Could not be added.'
+        })
+      }).finally(() => setAddLoading(false))
+  }
   return (
     <>
       <Navbar transparent />
@@ -78,31 +150,58 @@ export default function Profile() {
           <div className="container mx-auto px-4">
             <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
               <div className="px-6">
-                <div className="flex flex-wrap justify-center">
+                <div className="flex flex-wrap justify-center pb-10">
                   <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                     <div className="relative">
                       <img
                         alt="..."
-                        src={require("../../assets/img/team-1-800x800.jpg")}
+                        src={null || require("../../assets/img/team-1-800x800.jpg")}
                         className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16"
                         style={{ maxWidth: "150px" }}
                       />
                     </div>
                   </div>
                   <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
-                    {user.is_mentor && <div className="py-6 px-3 mt-32 sm:mt-0">
+                    {user.id == UserStore.getUser().id && <div className="py-6 px-3 mt-32 sm:mt-0">
                       <button
                         className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
                         type="button"
+                        onClick={e=> handleMentorAdd(e)}
                         style={{ transition: "all .15s ease" }}
                       >
+                         Edit
+                      </button>
+                    </div>}
+                    {!user.mentors_user && user.is_mentor && user.id != UserStore.getUser().id && <div className="py-6 px-3 mt-32 sm:mt-0">
+                      <button
+                        className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
+                        type="button"
+                        onClick={e=> handleMentorAdd(e)}
+                        style={{ transition: "all .15s ease" }}
+                      >
+                        {addLoading && <FontAwesomeIcon icon={faSpinner} />}
+                       {!addLoading && <span>
                         Add Mentor
+                        </span>}
+                      </button>
+                    </div>}
+                    {user.mentors_user && user.is_mentor && user.id != UserStore.getUser().id && <div className="py-6 px-3 mt-32 sm:mt-0">
+                      <button
+                        className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
+                        type="button"
+                        onClick={e=> handleMentorRemove(e)}
+                        style={{ transition: "all .15s ease" }}
+                      >
+                        {addLoading && <FontAwesomeIcon icon={faSpinner} />}
+                       {!addLoading && <span>
+                        Remove Mentor
+                        </span>}
                       </button>
                     </div>}
                   </div>
                 </div>
-                <div className="text-center mt-12">
-                  <h3 className="text-4xl font-semibold leading-normal mb-2 text-gray-800 mb-2">
+                <div className="text-center ">
+                  <h3 className="text-4xl font-semibold leading-normal text-gray-800 mb-2">
                     {user.first_name} {user.last_name}
                   </h3>
                   <div className="text-sm leading-normal mt-0 mb-2 text-gray-500 font-bold uppercase">
@@ -128,13 +227,13 @@ export default function Profile() {
                         warm, intimate feel with a solid groove structure. An
                         artist of considerable range.
                       </p>
-                      <a
+                      {/* <a
                         href="#pablo"
                         className="font-normal text-pink-500"
                         onClick={e => e.preventDefault()}
                       >
                         Show more
-                      </a>
+                      </a> */}
                     </div>
                   </div>
                 </div>

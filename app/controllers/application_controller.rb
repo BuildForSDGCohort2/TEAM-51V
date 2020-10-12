@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  # include ActionController::MimeResponds
+  include ActionController::MimeResponds
   protect_from_forgery with: :exception, unless: -> { allowed_request? }
 
   before_action :configure_permitted_parameters, if: :devise_controller?

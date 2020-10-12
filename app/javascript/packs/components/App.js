@@ -24,6 +24,7 @@ const App = ({ user }) => {
                 <Route exact path="/mentors" component={MentorsPage} />
                 <Route exact path="/mentees" component={MenteesPage} />
                 <Route exact path="/profile/:username" component={Profile} />
+                <Route exact path="/profile/:username/edit" component={Profile} />
                 <Route path="/dashboard" component={Dashboard} />
                 <Route path="/call/banasco" component={VideoCallComponent} />
                 <Route path="/start/meeting/:username" component={JoinMeeting} />
