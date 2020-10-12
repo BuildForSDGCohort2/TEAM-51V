@@ -6,5 +6,8 @@ class CreateMentorships < ActiveRecord::Migration[6.0]
 
       t.timestamps
     end
+    # add_index :mentorships, :mentor_id
+    # # add_index :mentorships, :mentee_id
+    # add_index :mentorships, [:mentor_id, :mentee_id], unique: true
   end
 end

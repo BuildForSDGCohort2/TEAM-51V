@@ -5,10 +5,10 @@ import Toast from '../../Toast'
 import UserStore from "./UserStore";
 import axios from 'axios'
 
-export default function RegisterPage() {
+export default function ProfileEdit() {
     let history = useHistory();
 
-    const [login, setLogin] = useState({ email: "", password: "", password_confirmation: "", username: "", is_mentor: 'off' })
+    const [login, setLogin] = useState({ email: "", password: "", password_confirmation: "", username: "" })
     const [error, setError] = useState({})
     const handleChange = e => {
         setLogin({ ...login, [e.target.name]: e.target.value })
@@ -18,11 +18,6 @@ export default function RegisterPage() {
         setError({ ...error, [e.target.name]: e.target.value })
     }
 
-    useEffect(() => {
-        if (UserStore.getUser()) {
-            history.replace('/dashboard')
-        }
-    }, [])
     const handleSubmit = e => {
         e.preventDefault();
         const payload = {

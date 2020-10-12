@@ -8,7 +8,9 @@ module Api
       end
 
       def show
-        render json: @user
+        user =  @user.as_json
+        user[:mentors_user] = @user.mentees.where(id: current_user.id).exists?
+        render json: user
       end
 
       private
